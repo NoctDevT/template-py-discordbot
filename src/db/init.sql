@@ -1,0 +1,10 @@
+CREATE DATABASE IF NOT EXISTS discorddb;
+
+USE discorddb;
+
+CREATE TABLE IF NOT EXISTS discordWarnings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    discord_id VARCHAR(255) NOT NULL,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    reason TEXT
+);

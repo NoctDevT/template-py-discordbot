@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  bot:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: discord-bot
+    depends_on:
+      - mysql
+    environment:
+      - DOCKERIZED=true
+    restart: always
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: discorddb
+      MYSQL_USER: discorduser
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: always
