@@ -218,6 +218,21 @@ async def list_warnings(ctx, user: discord.User):
         response = f"{user.mention} has no warnings."
 
     await ctx.send(response)
+    
+@bot.command(name="delete", help="Delete a set number of messages in the channel.")
+@commands.has_permissions(manage_messages=True)
+async def delete(ctx: commands.Context, amount: int):
+    if amount < 1:
+        await ctx.send("Please specify a number greater than zero.")
+        return
+
+    try:
+        deleted = await ctx.channel.purge(limit=amount)
+        await ctx.send(f"Deleted {len(deleted)} messages.", delete_after=5)
+    except discord.Forbidden:
+        await ctx.send("I do not have permission to manage messages.")
+    except discord.HTTPException as e:
+        await ctx.send(f"Failed to delete messages. Error: {e}")
 
 
 bot.run(TOKEN)
